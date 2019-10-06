@@ -1,3 +1,7 @@
+import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.project
+
 const val KotlinVersion = "1.3.50"
 
 object Config {
@@ -8,13 +12,14 @@ object Config {
         const val versionName = "1.0.0"
         const val versionCode = 1
         const val navigation = "2.2.0-alpha01"
+        const val gradle = "3.5.0"
     }
     object Android {
-        const val applicationId = "com.road20.secure"
+        const val applicationId = "com.butroad20.secure"
     }
     object Classpaths {
         const val navigation = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
-        const val gradle = "com.android.tools.build:gradle:${Versions.navigation}"
+        const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$KotlinVersion"
     }
 }
@@ -72,9 +77,14 @@ object Dependencies {
         object Versions {
             const val javaxAnnotation = "1.0"
             const val javaxInject = "1"
+            const val dagger = "2.24"
         }
         const val javax = "javax.inject:javax.inject:${Versions.javaxInject}"
         const val javaxAnnotation = "javax.annotation:jsr250-api:${Versions.javaxAnnotation}"
+        const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
+        const val daggerProcessor = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+        const val daggerAndroid = "com.google.dagger:dagger-android-support:${Versions.dagger}"
+        const val daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
     }
 
     object Persistence {
@@ -128,4 +138,118 @@ object Dependencies {
         const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
         const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
     }
+
+    object Test {
+        object JUnit {
+
+        }
+
+        object Android {
+
+        }
+    }
+}
+
+fun DependencyHandler.inject() {
+    add("implementation", Dependencies.DependencyInjection.javax)
+    add("kapt", Dependencies.DependencyInjection.javaxAnnotation)
+}
+
+fun DependencyHandler.implementDI() {
+    add("implementation", Dependencies.DependencyInjection.dagger)
+    add("kapt", Dependencies.DependencyInjection.daggerProcessor)
+    add("implementation", Dependencies.DependencyInjection.daggerAndroid)
+    add("kapt", Dependencies.DependencyInjection.daggerAndroidProcessor)
+}
+
+fun DependencyHandler.implementRoom() {
+    add("implementation", Dependencies.Persistence.room)
+    add("implementation", Dependencies.Persistence.roomRxJava)
+    add("kapt", Dependencies.Persistence.roomCompiler)
+}
+
+fun DependencyHandler.implementRetrofit() {
+    add("implementation", Dependencies.Network.retrofit)
+    add("implementation", Dependencies.Network.okhttp)
+    add("implementation", Dependencies.Network.loggingInterceptor)
+    add("implementation", Dependencies.Network.rxJavaAdapter)
+    add("implementation", Dependencies.Network.gsonConverter)
+    add("implementation", Dependencies.Network.stetho)
+}
+
+fun DependencyHandler.implementAsync() {
+    add("implementation", Dependencies.Async.rxJava)
+    add("implementation", Dependencies.Async.rxAndroid)
+}
+
+fun DependencyHandler.implementLocal() {
+    implementDI()
+    implementRoom()
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    add("implementation", project(":repository"))
+}
+
+fun DependencyHandler.implementRemote() {
+    implementDI()
+    implementRetrofit()
+    add("implementation", Dependencies.Utilities.timber)
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    add("implementation", project(":repository"))
+}
+
+fun DependencyHandler.implementAndroidX() {
+    add("implementation", Dependencies.AndroidX.coreKtx)
+    add("implementation", Dependencies.AndroidX.constraintLayout)
+    add("implementation", Dependencies.View.materialComponent)
+    add("implementation", Dependencies.AndroidX.lifecycle)
+    add("kapt", Dependencies.AndroidX.lifecycleCompiler)
+    add("implementation", Dependencies.AndroidX.navigationUiKtx)
+    add("implementation", Dependencies.AndroidX.navigationFragmentKtx)
+}
+
+fun DependencyHandler.implementRepository() {
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    add("implementation", project(":domain"))
+    implementAsync()
+    inject()
+}
+
+fun DependencyHandler.implementDomain() {
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    implementAsync()
+    inject()
+}
+
+fun DependencyHandler.implementCore() {
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    implementAndroidX()
+    implementDI()
+    implementAsync()
+    add("implementation", project(":local"))
+    add("implementation", project(":remote"))
+    add("implementation", project(":repository"))
+    add("implementation", project(":domain"))
+}
+
+fun DependencyHandler.implementApp() {
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    add("implementation", project(":core"))
+    implementAndroidX()
+    implementAsync()
+}
+
+fun DependencyHandler.implementAuthentication() {
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    add("implementation", project(":core"))
+    implementAndroidX()
+    implementAsync()
+    implementDI()
+}
+
+fun DependencyHandler.implementTransaction() {
+    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
+    add("implementation", project(":core"))
+    implementAndroidX()
+    implementAsync()
+    implementDI()
 }

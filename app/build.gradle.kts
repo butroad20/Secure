@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -15,6 +16,9 @@ android {
         versionName = Config.Versions.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    dataBinding {
+        isEnabled = true
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -24,11 +28,7 @@ android {
 }
 
 dependencies {
-//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk7", KotlinVersion))
-//    implementation 'androidx.appcompat:appcompat:1.1.0'
-//    implementation 'androidx.core:core-ktx:1.0.2'
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'androidx.test:runner:1.2.0'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementApp()
 }

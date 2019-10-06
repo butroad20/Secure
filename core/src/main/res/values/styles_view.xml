@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SecureBaseDialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/ic_round_white_dialog_background</item>
+    </style>
+
+    <style name="SecureBaseDialogTheme.WindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="SecureBaseTextStyle">
+        <item name="android:layout_height">?android:attr/actionBarSize</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+</resources>
