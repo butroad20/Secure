@@ -6,6 +6,6 @@
 		android:toDegrees="360"
 		android:pivotX="50%"
 		android:pivotY="50%"
-		android:duration="@integer/gokada_super_app_animation_duration" />
+		android:duration="@integer/secure_animation_duration" />
 
 </set>

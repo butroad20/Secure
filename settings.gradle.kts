@@ -1,3 +1,11 @@
 rootProject.buildFileName = "build.gradle.kts"
-
-include(":app", ":remote", ":local", ":repository", ":domain", ":core")
+rootProject.name = "Secure App"
+include(
+    ":app",
+    ":remote",
+    ":local",
+    ":repository",
+    ":domain",
+    ":core",
+    ":authentication"
+)

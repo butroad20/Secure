@@ -2,7 +2,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.project
 
-const val KotlinVersion = "1.3.50"
+const val KotlinVersion = "1.3.41"
 
 object Config {
     object Versions {
@@ -89,7 +89,7 @@ object Dependencies {
 
     object Persistence {
         object Versions {
-            const val roomVersion = "2.1.0"
+            const val roomVersion = "2.2.0-rc01"
         }
 
         const val room = "androidx.room:room-runtime:${Versions.roomVersion}"
@@ -225,10 +225,10 @@ fun DependencyHandler.implementCore() {
     implementAndroidX()
     implementDI()
     implementAsync()
-    add("implementation", project(":local"))
-    add("implementation", project(":remote"))
-    add("implementation", project(":repository"))
-    add("implementation", project(":domain"))
+    add("api", project(":local"))
+    add("api", project(":remote"))
+    add("api", project(":repository"))
+    add("api", project(":domain"))
 }
 
 fun DependencyHandler.implementApp() {
@@ -236,17 +236,10 @@ fun DependencyHandler.implementApp() {
     add("implementation", project(":core"))
     implementAndroidX()
     implementAsync()
-}
-
-fun DependencyHandler.implementAuthentication() {
-    add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
-    add("implementation", project(":core"))
-    implementAndroidX()
-    implementAsync()
     implementDI()
 }
 
-fun DependencyHandler.implementTransaction() {
+fun DependencyHandler.implementAuthentication() {
     add("implementation", kotlin("stdlib-jdk7", KotlinVersion))
     add("implementation", project(":core"))
     implementAndroidX()

@@ -3,6 +3,6 @@
     <translate
         android:fromYDelta="0"
         android:toYDelta="100%"
-        android:duration="@integer/gokada_super_app_animation_duration">
+        android:duration="@integer/secure_animation_duration">
     </translate>
 </set>
